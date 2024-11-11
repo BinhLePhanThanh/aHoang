@@ -22,4 +22,5 @@ RUN dotnet publish "./aHoang.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ["app.db", "/app/app.db"] 
 ENTRYPOINT ["dotnet", "aHoang.dll"]
