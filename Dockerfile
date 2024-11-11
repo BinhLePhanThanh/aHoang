@@ -23,4 +23,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY ["app.db", "/app/app.db"] 
+COPY ["UploadedImages", "/app/UploadedImages"] 
 ENTRYPOINT ["dotnet", "aHoang.dll"]
