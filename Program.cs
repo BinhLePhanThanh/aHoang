@@ -35,8 +35,12 @@ var app = builder.Build();
     app.UseSwaggerUI();
     app.UseCors();
 
-
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate(); // Thực hiện migration
+}
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
