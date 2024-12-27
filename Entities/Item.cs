@@ -7,5 +7,8 @@
         public string? Description { get; set; }
         public string? Type { get; set; }
         public string ImageFileName { get; set; }
+        public string? Category { get; set; }
+        public string? Class { get; set; }
+
     }
 }

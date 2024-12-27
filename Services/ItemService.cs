@@ -34,6 +34,10 @@ namespace aHoang.Services
                 Items = items
             };
         }
+        public IQueryable<Item> GetQueryableItems()
+        {
+            return _context.Items.AsQueryable();
+        }
         public async Task<Item> GetItemByIdAsync(int id)
         {
             return await _context.Items.FindAsync(id);

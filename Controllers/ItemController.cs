@@ -50,5 +50,44 @@ namespace aHoang.Controllers
             }
             return NoContent();
         }
+        [HttpGet("query")]
+        public async Task<ActionResult<PagedResult<Item>>> QueryItems(
+            string? category = null,
+            string? className = null,
+            string? name = null,
+            int pageNumber = 1,
+            int pageSize = 10)
+        {
+            var itemsQuery = _itemService.GetQueryableItems(); // Assuming you create this method in ItemService
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                itemsQuery = itemsQuery.Where(item => item.Category == category);
+            }
+
+            if (!string.IsNullOrEmpty(className))
+            {
+                itemsQuery = itemsQuery.Where(item => item.Class == className);
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                itemsQuery = itemsQuery.Where(item => item.Name.Contains(name));
+            }
+
+            var totalItems =itemsQuery.Count();
+            var items = itemsQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(new PagedResult<Item>
+            {
+                TotalCount = totalItems,
+                PageSize = pageSize,
+                CurrentPage = pageNumber,
+                Items = items
+            });
+        }
     }
 }
