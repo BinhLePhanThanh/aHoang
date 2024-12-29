@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql((builder.Configuration.GetConnectionString("DefaultConnection"))));
 builder.Services.AddScoped<ItemService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
