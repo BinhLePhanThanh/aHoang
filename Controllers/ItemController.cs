@@ -51,14 +51,17 @@ namespace aHoang.Controllers
             return NoContent();
         }
         [HttpGet("query")]
-        public async Task<ActionResult<PagedResult<Item>>> QueryItems(
-            string? category = null,
-            string? className = null,
-            string? name = null,
-            int pageNumber = 1,
-            int pageSize = 10)
+        public async Task<ActionResult<PagedResult<Item>>> QueryItems(                                                                        string? category = null,
+                                                                        string? className = null,
+                                                                        string? name = null,
+                                                                        string? author = null,
+                                                                        long? minPrice = null,
+                                                                        long? maxPrice = null,
+                                                                        string? type = null,
+                                                                        int pageNumber = 1,
+                                                                        int pageSize = 10)
         {
-            var itemsQuery = _itemService.GetQueryableItems(); // Assuming you create this method in ItemService
+            var itemsQuery = _itemService.GetQueryableItems();
 
             if (!string.IsNullOrEmpty(category))
             {
@@ -75,7 +78,27 @@ namespace aHoang.Controllers
                 itemsQuery = itemsQuery.Where(item => item.Name.Contains(name));
             }
 
-            var totalItems =itemsQuery.Count();
+            if (!string.IsNullOrEmpty(author))
+            {
+                itemsQuery = itemsQuery.Where(item => item.Author == author);
+            }
+
+            if (minPrice.HasValue)
+            {
+                itemsQuery = itemsQuery.Where(item => item.Price >= minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                itemsQuery = itemsQuery.Where(item => item.Price <= maxPrice.Value);
+            }
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                itemsQuery = itemsQuery.Where(item => item.Type == type);
+            }
+
+            var totalItems = itemsQuery.Count();
             var items = itemsQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
