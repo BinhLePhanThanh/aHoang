@@ -20,6 +20,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddTransient<EmailService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql((builder.Configuration.GetConnectionString("DefaultConnection"))));
 builder.Services.AddScoped<ItemService>();
