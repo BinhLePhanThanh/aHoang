@@ -44,8 +44,8 @@ namespace aHoang.Services
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                    
+                    await client.ConnectAsync("smtp.gmail.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+
                     await client.AuthenticateAsync("lb3026723@gmail.com", accessToken); // Thay đổi email của bạn
                     await client.SendAsync(message, System.Threading.CancellationToken.None); 
                     await client.DisconnectAsync(true);
